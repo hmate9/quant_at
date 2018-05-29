@@ -219,17 +219,12 @@ def coint_johansen(x, p, k):
     return result
 
 def print_johan_stats(res):
-     print 'trace statistic', res.lr1
-     print 'critical vals %90,%95,%99'
-     for i in range(len(res.cvt)): print 'r<=%d' % i, res.cvt[i]
-     print
-     print 'eigen statistic', res.lr2
-     print 'critical values  %90,%95,%99'
-     for i in range(len(res.cvm)): print 'r<=%d' % i, res.cvm[i]
-     print
-     print 'ozdegerler', res.eig
-     print
-     print 'ozvektorler'
-     print
-     print res.evec
+     print('trace statistic', res.lr1)
+     print('critical vals %90,%95,%99')
+     for i in range(len(res.cvt)): print('r<=%d' % i, res.cvt[i])
+     print()
+     print('eigen statistic', res.lr2)
+     print('critical values  %90,%95,%99')
+     for i in range(len(res.cvm)): print('r<=%d' % i, res.cvm[i])
+
     

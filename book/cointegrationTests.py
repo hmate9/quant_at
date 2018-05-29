@@ -7,30 +7,30 @@ import pandas as pd
 df = pd.read_csv('ETF.csv',index_col=0)
 plt.hold(True)
 df[['ewa','ewc']].plot()
-#plt.show()
+plt.show()
 
 plt.scatter(df['ewa'],df['ewc'])
 plt.title('ewa / ewc')
-#plt.show()
+plt.show()
 
 import statsmodels.formula.api as smf
 results = smf.ols('ewc ~ ewa', data=df).fit()
 hedgeRatio = results.params['ewa']
-print hedgeRatio
+print(hedgeRatio)
 
 df['coint'] = df['ewc']-hedgeRatio*df['ewa']
 plt.hold(False)
 df['coint'].plot()
-#plt.show()
+plt.show()
 
-import pyconometrics
-print pyconometrics.cadf(np.matrix(df['ewa']).H,
-                         np.matrix(df['ewc']).H,0,1)
+# import pyconometrics
+# print(pyconometrics.cadf(np.matrix(df['ewa']).H,
+#                          np.matrix(df['ewc']).H,0,1))
 
 import statsmodels.tsa.stattools as st
 import hurst 
-print 'hurst', hurst.hurst(df['coint'])
-print st.adfuller(df['coint'],maxlag=1)
+print('hurst', hurst.hurst(df['coint']))
+print(st.adfuller(df['coint'],maxlag=1))
 
 from johansen import coint_johansen, print_johan_stats
 res = coint_johansen(df[['ewa','ewc']], 0, 1)
@@ -43,10 +43,12 @@ print_johan_stats(res3)
 df['yport'] = np.dot(df[cols], res3.evec[:,0])
 plt.hold(False)
 df['yport'].plot()
-#plt.show()
+plt.show()
 
 import halflife
 hf = halflife.halflife(df, 'yport')[1]
+hf = int(hf)
+print("halflife:", hf)
 data_mean = pd.rolling_mean(df['yport'], window=hf)
 data_std = pd.rolling_std(df['yport'], window=hf)
 # yport evec ile senet carpimi
@@ -68,7 +70,7 @@ pnl = pnl.sum(axis=1)
 ret=pnl / np.sum(np.abs(positions.shift(1)),axis=1)
 # Kumulatif birlesik getiri
 plt.plot(np.cumprod(1+ret)-1)
-#plt.show()
+plt.show()
 
-print 'APR', ((np.prod(1.+ret))**(252./len(ret)))-1
-print 'Sharpe', np.sqrt(252.)*np.mean(ret)/np.std(ret)
+print('APR', ((np.prod(1.+ret))**(252./len(ret)))-1)
+print('Sharpe', np.sqrt(252.)*np.mean(ret)/np.std(ret))
